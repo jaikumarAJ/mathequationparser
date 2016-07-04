@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * @author Pablo Martinez Piles
  * Using shunting yard algorithm
  *
+ * https://en.wikipedia.org/wiki/Shunting-yard_algorithm
  */
 
 public class Operations {
@@ -41,7 +42,7 @@ public class Operations {
 		// Check if the last one was Multiply or Divide to calculate it
 		this.compareOperatorWithTopOfStack(Operator.NOT_FOUND);
 		this.calculateOutstandingOperations();
-		return n.get(0);
+		return Utils.round(n.get(0), 2);
 	}
 	
 	private void compareOperatorWithTopOfStack(Operator operator){
@@ -51,12 +52,6 @@ public class Operations {
 					Double n1 = n.remove(n.size() -1);
 					Double n2 = n.remove(n.size() -1);
 					switch(lastOperator){
-						case ADD:
-							n.add(n2 + n1);
-							break;
-						case SUBTRACT:
-							n.add(n2 - n1);
-							break;
 						case MULTIPLY:
 							n.add(n2 * n1);
 							break;
@@ -68,11 +63,10 @@ public class Operations {
 					}
 					
 					op.remove(lastOperator);
-					this.compareOperatorWithTopOfStack(lastOperator);
+					this.compareOperatorWithTopOfStack(operator);
 				}
 				
-			}
-		
+			}	
 	}
 	
 	private void calculateOutstandingOperations(){
@@ -88,12 +82,6 @@ public class Operations {
 					break;
 				case SUBTRACT:
 					n.add(n1 - n2);
-					break;
-				case MULTIPLY:
-					n.add(n1 * n2);
-					break;
-				case DIVIDE:
-					n.add(n1 / n2);
 					break;
 				default:
 					break;
